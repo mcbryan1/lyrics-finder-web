@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -27,8 +27,49 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
 }));
+
 function MainPage() {
   const classes = useStyles();
+
+  const [form, setForm] = useState({
+    artist: "",
+    song: "",
+  });
+
+  const [lyrics, setLyrics] = useState([]);
+
+  //   Fetching Api
+  async function lyricsData(e) {
+    e.preventDefault();
+    if (form.artist === "" && form.song === "") {
+      alert("Input Data");
+    } else {
+      const data = await fetch(
+        `https://api.lyrics.ovh/v1/${form.artist}/${form.song}`
+      )
+        .then((res) => res.json())
+        // .then((data) => console.log(data))
+        .catch((error) => console.log(error));
+      setLyrics({
+        data: data,
+      });
+    }
+  }
+
+  //   Handling Text Change
+  const handleChange = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "artist") {
+      setForm({ ...form, artist: value });
+    }
+    if (name === "song") {
+      setForm({ ...form, song: value });
+    }
+    // console.log(form.artist, form.song);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="secondary">
@@ -44,19 +85,31 @@ function MainPage() {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12 text-center mt-5">
-            <form className={classes.main} autoComplete="on">
+            <form
+              className={classes.main}
+              autoComplete="on"
+              onSubmit={(e) => lyricsData(e)}
+            >
               <TextField
                 id="standard-basic"
                 label="Name of artist"
                 color="secondary"
-                className="field"
+                name="artist"
+                onChange={(e) => handleChange(e)}
               />
               <TextField
                 id="standard-basic"
                 label="Song title"
                 color="secondary"
+                name="song"
+                onChange={(e) => handleChange(e)}
               />
-              <Button variant="contained" color="secondary" className="p-3 btn">
+              <Button
+                variant="contained"
+                color="secondary"
+                className="p-3 btn"
+                onClick={(e) => lyricsData(e)}
+              >
                 <SearchIcon /> Search
               </Button>
             </form>
@@ -67,13 +120,17 @@ function MainPage() {
           <div className="col-md-6 mt-5">
             <div className="row mb-3 ">
               <div className="col-6 title">
-                <h6>Solomon McBryan</h6>
+                <h6>{form.artist}</h6>
               </div>
               <div className="col-6 title">
-                <h6>Love of my life</h6>
+                <h6>{form.song}</h6>
               </div>
             </div>
-            <LyricsPage />
+            {lyrics.data !== undefined ? (
+              <div>
+                <LyricsPage data={lyrics.data} />
+              </div>
+            ) : null}
           </div>
           <div className="col-md-3"></div>
         </div>
