@@ -1,0 +1,11 @@
+.btn{
+    font-weight: bold;
+}
+.title h6{
+    font-weight: bold;
+}
+.lyrics p{
+    color: rgb(109, 109, 109);
+    font-weight: 100 !important;
+    font-size: 15px;
+}
