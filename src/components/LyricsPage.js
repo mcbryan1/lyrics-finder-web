@@ -5,7 +5,11 @@ function LyricsPage(props) {
   const { data } = props;
   return (
     <div className="lyrics">
-      {data.lyrics ? <p>{data.lyrics}</p> : <p className='text-center noLyrics'>No Lyrics Found</p>}
+      {data.lyrics ? (
+        <p>{data.lyrics}</p>
+      ) : (
+        <h4 className="text-center noLyrics">No Lyrics Found</h4>
+      )}
     </div>
   );
 }
