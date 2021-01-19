@@ -119,10 +119,10 @@ function MainPage() {
           <div className="col-md-3"></div>
           <div className="col-md-6 mt-5">
             <div className="row mb-3 ">
-              <div className="col-6 title">
+              <div className="col-6 title text-center">
                 <h6>{form.artist}</h6>
               </div>
-              <div className="col-6 title">
+              <div className="col-6 title text-center">
                 <h6>{form.song}</h6>
               </div>
             </div>
